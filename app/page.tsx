@@ -58,7 +58,7 @@ export default function Home() {
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\nMessage:\n${form.message}`
     );
-    window.location.href = `mailto:Isaackapadia@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:kapadia.brokerage@gmail.com?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -359,8 +359,8 @@ export default function Home() {
       }}>
         <span style={{ fontFamily: SERIF, fontSize: 18, color: "rgba(245,240,232,0.5)" }}>Kapadia Brokerage</span>
         <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-          <a href="mailto:isaac@kapadiabrokerage.com" style={{ fontSize: 13, color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
-            isaac@kapadiabrokerage.com
+          <a href="mailto:kapadia.brokerage@gmail.com" style={{ fontSize: 13, color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
+            kapadia.brokerage@gmail.com
           </a>
           <span style={{ fontSize: 13, color: "rgba(245,240,232,0.2)" }}>Bay Area, CA</span>
         </div>
