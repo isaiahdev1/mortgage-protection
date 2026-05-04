@@ -1,29 +1,29 @@
 #!/bin/bash
-# Full automation pipeline — run this once a day (or set a cron job)
+# Full automation pipeline — run this once a day
 # Usage: bash run_pipeline.sh
 
 set -e
-
 cd "$(dirname "$0")"
 
 echo "================================================"
-echo "  Mortgage Protection Outreach Pipeline"
+echo "  Kapadia Brokerage — Outreach Pipeline"
 echo "  $(date)"
 echo "================================================"
 
-# Step 1: Scrape new Gilroy home sales
 echo ""
-echo "[1/3] Scraping new Gilroy homebuyers..."
+echo "[1/4] Scraping new Gilroy homebuyers..."
 python3 scraper.py
 
-# Step 2: Enrich with contact info
 echo ""
-echo "[2/3] Enriching leads with contact info..."
+echo "[2/4] Enriching leads with contact info..."
 python3 enrich.py
 
-# Step 3: Send emails
 echo ""
-echo "[3/3] Sending outreach emails..."
+echo "[3/4] Personalizing emails with Claude AI..."
+python3 personalize.py
+
+echo ""
+echo "[4/4] Sending emails..."
 python3 send_emails.py
 
 echo ""
