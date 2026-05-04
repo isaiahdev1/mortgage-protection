@@ -79,15 +79,16 @@ def build_email(lead: dict) -> tuple[str, str, str]:
 
   <hr style="margin: 48px 0; border: none; border-top: 1px solid #eeeeee;" />
 
-  <p style="font-size: 13px; color: #888888; line-height: 1.6;">
-    <strong>Isaac Kapadia</strong> — Mortgage Protection Specialist<br>
-    Gilroy, CA 95020<br>
-    <a href="mailto:{SENDER_EMAIL}" style="color: #888888;">{SENDER_EMAIL}</a>
+  <p style="font-size: 13px; color: #888888; line-height: 1.8;">
+    <strong>Isaac Kapadia</strong><br>
+    Mortgage Protection Specialist · Kapadia Brokerage<br>
+    <a href="https://kapadiabrokerage.com" style="color: #888888;">kapadiabrokerage.com</a><br>
+    Bay Area, CA
   </p>
 
   <p style="font-size: 12px; color: #aaaaaa; line-height: 1.6; margin-top: 16px;">
-    You received this email because you recently purchased a home in Gilroy, CA — a matter of public record.
-    If you&apos;d prefer not to receive future emails, simply reply with &quot;unsubscribe&quot; and I&apos;ll remove you immediately.
+    You received this email because you recently purchased a home — a matter of public record.
+    Reply STOP to unsubscribe.
   </p>
 
 </body>

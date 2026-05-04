@@ -115,7 +115,7 @@ export default function Home() {
             fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase",
             color: "#c9a84c", marginBottom: 24, fontWeight: 500
           }}>
-            Mortgage Protection Insurance · Gilroy, CA
+            Mortgage Protection Insurance · Bay Area, CA
           </p>
 
           <h1 className="fade-up delay-2" style={{
@@ -278,7 +278,7 @@ export default function Home() {
             Let&apos;s find the right coverage for you.
           </h2>
           <p style={{ fontSize: 16, color: "rgba(245,240,232,0.45)", lineHeight: 1.7, marginBottom: 48, fontWeight: 300 }}>
-            Fill out the form and Isaac will reach out within 24 hours with a personalized quote — no pressure, no obligation.
+            Fill out the form and Isaac will reach out within 24 hours with a personalized quote — no pressure, no obligation. Serving homeowners across the Bay Area.
           </p>
         </RevealSection>
 
@@ -359,10 +359,10 @@ export default function Home() {
       }}>
         <span style={{ fontFamily: SERIF, fontSize: 18, color: "rgba(245,240,232,0.5)" }}>Kapadia Brokerage</span>
         <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-          <a href="mailto:Isaackapadia@gmail.com" style={{ fontSize: 13, color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
-            Isaackapadia@gmail.com
+          <a href="mailto:isaac@kapadiabrokerage.com" style={{ fontSize: 13, color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
+            isaac@kapadiabrokerage.com
           </a>
-          <span style={{ fontSize: 13, color: "rgba(245,240,232,0.2)" }}>Gilroy, CA</span>
+          <span style={{ fontSize: 13, color: "rgba(245,240,232,0.2)" }}>Bay Area, CA</span>
         </div>
       </footer>
 
