@@ -75,7 +75,7 @@ export default function Home() {
         borderBottom: "1px solid rgba(255,255,255,0.06)"
       }}>
         <span style={{ fontFamily: SERIF, fontSize: 20, letterSpacing: "-0.02em", color: "#f5f0e8" }}>
-          Mortgage Protection
+          Kapadia Brokerage
         </span>
         <a href="#contact" style={{
           background: "linear-gradient(135deg, #c9a84c, #e8c46a)",
@@ -357,7 +357,7 @@ export default function Home() {
         flexWrap: "wrap",
         gap: 16
       }}>
-        <span style={{ fontFamily: SERIF, fontSize: 18, color: "rgba(245,240,232,0.5)" }}>Mortgage Protection</span>
+        <span style={{ fontFamily: SERIF, fontSize: 18, color: "rgba(245,240,232,0.5)" }}>Kapadia Brokerage</span>
         <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
           <a href="mailto:Isaackapadia@gmail.com" style={{ fontSize: 13, color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
             Isaackapadia@gmail.com

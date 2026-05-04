@@ -17,8 +17,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mortgage Protection — Secure Your Home & Family",
-  description: "If something happens to you, your family keeps the home. Affordable term life coverage built for homeowners in Gilroy and the Bay Area.",
+  title: "Kapadia Brokerage — Mortgage Protection for Gilroy Homeowners",
+  description: "If something happens to you, your family keeps the home. Affordable term life coverage from Kapadia Brokerage, serving Gilroy and the Bay Area.",
 };
 
 export default function RootLayout({
