@@ -1,0 +1,40 @@
+name: Daily Lead Pipeline
+
+on:
+  schedule:
+    - cron: "0 16 * * *"  # 8am PST / 9am PDT every day
+  workflow_dispatch:       # allow manual trigger from GitHub UI
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run scraper
+        working-directory: automation
+        run: python scraper.py
+
+      - name: Enroll leads in Apollo
+        working-directory: automation
+        env:
+          APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+        run: python apollo_enroll.py
+
+      - name: Save enrolled leads back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add automation/enrolled_leads.json automation/gilroy_homebuyers.csv
+          git diff --staged --quiet || git commit -m "chore: update enrolled leads [skip ci]"
+          git push
