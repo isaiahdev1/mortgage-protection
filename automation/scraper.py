@@ -18,7 +18,7 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-GILROY_ZIPS = ["95020", "95021"]
+GILROY_ZIPS = ["95020", "95021", "95037", "95038", "95046", "95023", "95024"]
 
 OUTPUT_FILE = "gilroy_homebuyers.csv"
 
