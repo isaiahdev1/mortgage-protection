@@ -1,95 +1,68 @@
 """
-Fetches recently sold homes in Gilroy and surrounding areas via Zillow API (RapidAPI).
-Outputs a CSV: address, sale_price, city, state, zip, url, scraped_at
+Fetches recently sold homes in Gilroy, Morgan Hill, San Martin, and Hollister
+via the Zillw Real Estate API (RapidAPI). One API call covers the full area.
+Outputs: gilroy_homebuyers.csv
 """
 
 import csv
-import json
 import os
-import time
 import requests
 from datetime import datetime
 
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
-
+HOST = "zillw-real-estate-api.p.rapidapi.com"
 HEADERS = {
-    "x-rapidapi-host": "zillow-com1.p.rapidapi.com",
+    "Content-Type": "application/json",
+    "x-rapidapi-host": HOST,
     "x-rapidapi-key": RAPIDAPI_KEY,
 }
 
-TARGET_LOCATIONS = [
-    ("Gilroy, CA", "Gilroy"),
-    ("Morgan Hill, CA", "Morgan Hill"),
-    ("San Martin, CA", "San Martin"),
-    ("Hollister, CA", "Hollister"),
-]
+# Bounding box covering Gilroy, Morgan Hill, San Martin, Hollister
+BOUNDS = {
+    "north_latitude": 37.20,
+    "south_latitude": 36.80,
+    "east_longitude": -121.35,
+    "west_longitude": -121.75,
+    "max_results": 100,
+}
 
 OUTPUT_FILE = "gilroy_homebuyers.csv"
 
 
-def fetch_recently_sold(location: str) -> list[dict]:
-    try:
-        resp = requests.get(
-            "https://zillow-com1.p.rapidapi.com/propertyExtendedSearch",
-            headers=HEADERS,
-            params={
-                "location": location,
-                "status_type": "RecentlySold",
-                "home_type": "Houses,Townhomes,Condos",
-            },
-            timeout=20,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        return data.get("props", [])
-    except Exception as e:
-        print(f"  Error fetching {location}: {e}")
-        return []
+def fetch_sold_homes() -> list[dict]:
+    resp = requests.post(
+        f"https://{HOST}/search-homes-sold/index.php",
+        headers=HEADERS,
+        json=BOUNDS,
+        timeout=30,
+    )
+    resp.raise_for_status()
+    return resp.json().get("data", {}).get("json", {}).get("searchResults", [])
 
 
-def parse_property(prop: dict, city: str) -> dict | None:
+def parse_property(result: dict) -> dict | None:
     try:
-        address = prop.get("address", "")
-        if not address:
+        prop = result.get("property", {})
+        addr = prop.get("address", {})
+        street = addr.get("streetAddress", "")
+        if not street:
             return None
-        price = prop.get("price", "")
-        detail_url = prop.get("detailUrl", "")
-        zip_code = prop.get("zipCode", "")
+        price_data = prop.get("price", {})
+        price = price_data.get("value", "") if isinstance(price_data, dict) else price_data
         return {
-            "address": address,
-            "sale_price": str(price).replace(",", "").replace("$", ""),
-            "city": city,
-            "state": "CA",
-            "zip": zip_code,
-            "url": f"https://www.zillow.com{detail_url}" if detail_url else "",
+            "address": street,
+            "sale_price": str(price),
+            "city": addr.get("city", ""),
+            "state": addr.get("state", "CA"),
+            "zip": addr.get("zipcode", ""),
+            "last_sold_date": prop.get("lastSoldDate", ""),
+            "beds": prop.get("bedrooms", ""),
+            "baths": prop.get("bathrooms", ""),
+            "url": f"https://www.zillow.com/homedetails/{prop.get('zpid', '')}_zpid/",
             "scraped_at": datetime.now().strftime("%Y-%m-%d"),
         }
     except Exception:
         return None
-
-
-def scrape_all() -> list[dict]:
-    if not RAPIDAPI_KEY:
-        print("ERROR: Set RAPIDAPI_KEY environment variable.")
-        return []
-
-    all_results = []
-    seen = set()
-
-    for location, city in TARGET_LOCATIONS:
-        print(f"\nFetching recently sold in {city}...")
-        props = fetch_recently_sold(location)
-        print(f"  {len(props)} results")
-
-        for prop in props:
-            parsed = parse_property(prop, city)
-            if parsed and parsed["address"] not in seen:
-                seen.add(parsed["address"])
-                all_results.append(parsed)
-
-        time.sleep(1)
-
-    return all_results
 
 
 def save_csv(records: list[dict], filename: str):
@@ -101,12 +74,29 @@ def save_csv(records: list[dict], filename: str):
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(records)
-    print(f"\nSaved {len(records)} records to {filename}")
+    print(f"Saved {len(records)} records to {filename}")
+
+
+def run():
+    if not RAPIDAPI_KEY:
+        print("ERROR: Set RAPIDAPI_KEY environment variable.")
+        return
+
+    print("Fetching recently sold homes (Gilroy, Morgan Hill, San Martin, Hollister)...")
+    results = fetch_sold_homes()
+    print(f"  {len(results)} listings returned")
+
+    records = []
+    seen = set()
+    for r in results:
+        parsed = parse_property(r)
+        if parsed and parsed["address"] not in seen:
+            seen.add(parsed["address"])
+            records.append(parsed)
+
+    save_csv(records, OUTPUT_FILE)
+    print(f"Done. {len(records)} unique homes.")
 
 
 if __name__ == "__main__":
-    print("Zillow Recently Sold — Gilroy & Surrounding Areas")
-    print("=" * 50)
-    results = scrape_all()
-    save_csv(results, OUTPUT_FILE)
-    print(f"\nDone. {len(results)} homes found.")
+    run()
