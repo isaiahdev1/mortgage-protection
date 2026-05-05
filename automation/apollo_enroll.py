@@ -101,8 +101,16 @@ def run():
         print("ERROR: Set APOLLO_API_KEY environment variable.")
         return
 
+    if not os.path.exists(INPUT_FILE):
+        print("No leads file found — scraper may have returned no results. Skipping.")
+        return
+
     with open(INPUT_FILE, newline="") as f:
         leads = list(csv.DictReader(f))
+
+    if not leads:
+        print("Leads file is empty. Nothing to enroll.")
+        return
 
     enrolled = load_enrolled()
     new_enrollments = 0
